@@ -69,7 +69,7 @@ commands.addCommand(
 const rnd = new SlashCommand({
   type: SlashCommand.Type.GUILD,
   guildIDs: slashguild,
-  options: [{ type: "STRING", name: "Length", description: "nannketa", required: true },{ type: "BOOLEAN", name: "isNum", description: "Number only?" }],
+  options: [{ type: "STRING", name: "length", description: "nannketa", required: true },{ type: "BOOLEAN", name: "isNum", description: "Number only?" }],
   execute: require("./commands/rnd.js")
 }).setName("rnd")
     .setDescription("Rannsu")

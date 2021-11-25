@@ -4,20 +4,23 @@ const { MessageAttachment } = require("discord.js");
 
 const fs = require("fs");
 const https = require("https");
+const path = require('path')
 
 const util = require("../util.js");
 const { API: { fetch } } = require("../system");
 
 const parameter = {
   saveFileCount: 5,
-  folder: "./data/musicFiles",
+  folder: path.relative(process.cwd(), `${__dirname}/../data/musicFiles`),
   musicFile(number) {
     return `${this.folder}/file_${number}.mp3`;
   },
-  historyFile: "./data/musicFiles/history.json",
+  get historyFile() {
+    return `${this.folder}/history.json`
+  },
   tool: "https://chatter-deeply-shaker.glitch.me/",
 };
-
+console.log(parameter.folder)
 module.exports = async () => {
   const filename = await composition();
   return {
@@ -32,7 +35,7 @@ async function composition() {
   const url = await fetch("get", parameter.tool, {
     timeout: 60 * 1000
   });
-  if(!url) return;
+  if (!url) return;
   //console.log(url)
   //console.log(url);
   // 出力ファイル名を指定

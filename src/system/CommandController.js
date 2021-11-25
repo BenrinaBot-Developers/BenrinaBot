@@ -237,7 +237,7 @@ class SlashCommandManager extends BaseCommandManager {
       }
       //console.log(this.argumentTypes, _interaction.commandName)
 	    //console.log(_interaction)
-      console.log(argumentsData)
+      console.log(calledCommand.data.name, argumentsData)
 
       let firstResponse = true, deferred = false;
       let timeout = false;

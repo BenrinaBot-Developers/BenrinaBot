@@ -6,6 +6,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const { SlashCommand, MessageCommand, CommandController } = require("./system");
 
+
 const functions = require("./functions.js");
 const dbutil = require("./dbutil.js");
 const db = dbutil.db;
@@ -24,28 +25,24 @@ commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD, guildIDs: slashguild,
     argumentTypes: SlashCommand.ArgumentType.OBJECT,
-    options: [
-      {
-        type: "STRING", name: "output", description: "Whether to output as a text file or as a message (Default:message)",
-        choices: [
-          { name: "as a message", value: "message" },
-          { name: "as a text file", value: "file" }
-        ]
-      },
-      { type: "BOOLEAN", name: "accessible", description: "Whether to narrow down the displayed channels by permissions (Default:false)" },
-      { type: "BOOLEAN", name: "voice", description: "Whether to show voice channels (Default:true)" },
-      {
-        type: "STRING", name: "thread", description: "Whether to show thread channels (Default:none)",
-        choices: [
-          { name: "None", value: "none" },
-          { name: "Active", value: "active" },
-          { name: "All", value: "all" }
-        ]
-      },
-    ],
     execute: require("./commands/serverMap.js")
-  }).setName("map")
+  })
+    .setName("map")
     .setDescription("Generate a map of your server.")
+    .addStringOption(_option => 
+      _option.setName("output").setDescription("Whether to output as a text file or as a message (Default:message)")
+        .addChoices([["as a message", "message"], ["as a text file", "file"]])
+    )
+    .addBooleanOption(_option =>
+      _option.setName("accessible").setDescription("Whether to narrow down the displayed channels by permissions (Default:false)")
+    )
+    .addBooleanOption(_option =>
+      _option.setName("voice").setDescription("Whether to show voice channels (Default:true)")
+    )
+    .addStringOption(_option => 
+      _option.setName("thread").setDescription("Whether to show thread channels (Default:none)")
+        .addChoices([["None", "none"], ["Active", "active"], ["All", "all"]])
+    )
 );
 
 commands.addCommand(
@@ -69,10 +66,10 @@ commands.addCommand(
 const rnd = new SlashCommand({
   type: SlashCommand.Type.GUILD,
   guildIDs: slashguild,
-  options: [{ type: "STRING", name: "length", description: "nannketa", required: true },{ type: "BOOLEAN", name: "isNum", description: "Number only?" }],
+  options: [{ type: "STRING", name: "length", description: "nannketa", required: true }, { type: "BOOLEAN", name: "isnum", description: "Number only?" }],
   execute: require("./commands/rnd.js")
 }).setName("rnd")
-    .setDescription("Rannsu")
+  .setDescription("Rannsu")
 commands.addCommand(rnd);
 
 commands.addCommand(
@@ -173,7 +170,7 @@ const translation = new SlashCommand({
   type: SlashCommand.Type.GUILD, guildIDs: slashguild,
   execute: translate.execute
 }).setName("translate")
-    .setDescription("Translate your sentence.")
+  .setDescription("Translate your sentence.")
 commands.addCommand(translation);
 
 commands.addCommand(
@@ -189,7 +186,7 @@ const wikipedia = new SlashCommand({
   guildIDs: slashguild, argumentTypes: SlashCommand.ArgumentType.OBJECT,
   execute: require("./commands/wikipedia.js").search
 }).setName("wikipedia")
-    .setDescription("Search on Wikipedia.")
+  .setDescription("Search on Wikipedia.")
 commands.addCommand(wikipedia);
 
 commands.addCommand(
@@ -210,7 +207,7 @@ const devtest = new SlashCommand({
   options: [{ type: "STRING", name: "arg1", description: "args1", required: true }],
   execute: require("./commands/devcmd.js")
 }).setName("devtest")
-    .setDescription("The command for developers")
+  .setDescription("The command for developers")
 commands.addCommand(devtest);
 
 commands.addCommand(

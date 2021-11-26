@@ -6,7 +6,6 @@ const { client, slashguild } = require("./util.js");
 const { SlashCommand, MessageCommand, CommandController } = require("./system");
 
 const functions = require("./functions.js");
-const dbutil = require("./dbutil.js");
 
 const commands = new CommandController();
 

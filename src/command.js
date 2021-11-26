@@ -2,13 +2,10 @@
 
 const Discord = require("discord.js");
 const { client, slashguild } = require("./util.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
 
 const { SlashCommand, MessageCommand, CommandController } = require("./system");
 
-const functions = require("./functions.js");
-const dbutil = require("./dbutil.js");
-const db = dbutil.db;
+//const functions = require("./functions.js");
 
 const commands = new CommandController();
 

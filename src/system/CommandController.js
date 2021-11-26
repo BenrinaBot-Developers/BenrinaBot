@@ -31,7 +31,7 @@ class BaseCommand extends SlashCommandBuilder {
     } else {
       throw new Error("Invalid command's type: " + this.type);
     }
-    this.options = _definition.options;
+    Object.assign(this.options, _definition.options);
   }
   
   static Type = {
@@ -41,7 +41,7 @@ class BaseCommand extends SlashCommandBuilder {
 }
 
 class SlashCommand extends BaseCommand {
-  constructor(_definition) {
+  constructor(_definition = {}) {
     super(_definition);
     this.id = {};
     this.timeout = _definition.timeout ?? 15 * 1000;

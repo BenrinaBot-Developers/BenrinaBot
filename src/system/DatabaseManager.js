@@ -24,7 +24,7 @@ class Cache {
     this.#tags = [];
   }
   async begin() {
-    this.fileSelecter = await this.#getNewerFileSelecter();
+    this.fileSelector = await this.#getNewerFileSelector();
     return this;
   }
 
@@ -67,7 +67,7 @@ class Cache {
     _data = Object.assign({}, _data, {
       [this.#lastKeyName]: Date.now(),
     });
-    this.fileSelecter = !this.fileSelecter;
+    this.fileSelector = !this.fileSelector;
     return this.#writeFile(this.#currentPath, _data);
   }
   #updateLower(_cache, _options) {
@@ -83,16 +83,16 @@ class Cache {
     return fs.promises.writeFile(_path, _data);
   }
 
-  async #getNewerFileSelecter() {
+  async #getNewerFileSelector() {
     const Cache_A = this.#readFile(this.#getPath("A"));
     const Cache_B = this.#readFile(this.#getPath("B"));
     return ((await Cache_A)[this.#lastKeyName] ?? 0) >= ((await Cache_B)[this.#lastKeyName] ?? 0);
   }
   get #currentPath() {
-    return this.#getPath(this.fileSelecter ? "A" : "B");
+    return this.#getPath(this.fileSelector ? "A" : "B");
   }
-  #getPath(_selecter) {
-    return `./database/cache/L${this.level}/${_selecter}/${this.type}.json`;
+  #getPath(_selector) {
+    return `./database/cache/L${this.level}/${_selector}/${this.type}.json`;
   }
 
   get size() {
@@ -221,11 +221,11 @@ class BaseDatabaseManager {
   }
   async begin() {
     await this.clearCache()
-    this.fileSelecter = { //true:A, false:B
-      l1: await this.#getNewerFileSelecter(1),
-      l2: await this.#getNewerFileSelecter(2)
+    this.fileSelector = { //true:A, false:B
+      l1: await this.#getNewerFileSelector(1),
+      l2: await this.#getNewerFileSelector(2)
     };
-    console.log(this.fileSelecter)
+    console.log(this.fileSelector)
     return this.#save()
   }
 }
@@ -256,7 +256,7 @@ client.on("messageCreate", message => {
     //console.log(arrStr.split(","))
     normal_test.delete(arrStr.split(","));
   } else if(message.content.startsWith("/bt!db_test4")) {
-    //console.log((normal_test.#getNewerFileSelecter().then(console.log)), normal_test.fileSelecter);
+    //console.log((normal_test.#getNewerFileSelector().then(console.log)), normal_test.fileSelector);
   } else if(message.content.startsWith("/bt!db_test.end")) {
     console.log(normal_test.end());
   }

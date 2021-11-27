@@ -4,13 +4,20 @@ const express = require('express');
 const app = express();
 
 app.get('/reboot', (req, res) => {
-  res.send("exit");
+  if (req.query.token !== process.env.token) {
+    res.send("Invalid token\n");
+    return;
+  }
+  res.send("Rebooting\n");
   require("../replit/reboot.js");
 });
 
 app.listen('3000', () => {
-    console.log('Application started');
+  console.log('Application started');
 });
+
+//BOT
+require("./bot.js");
 
 // リクエストの処理
 /*
@@ -28,7 +35,7 @@ function doRequest(req, res) {
       //console.log(url)
       fs.readFile(`${__dirname}/web${url}`, "UTF-8", function (err, data) {
         res.writeHead(200, {"Content-Type": "text/javascript"});
-        res.write(data); 
+        res.write(data);
         res.end();
       });
       } else if (url.match(/\.png$/)) {
@@ -38,6 +45,3 @@ function doRequest(req, res) {
     }
   }
 }*/
-
-//BOT
-require("./bot.js");

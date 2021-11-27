@@ -55,9 +55,9 @@ try {
     }, 1000 * 5);
   });
 
-  if (process.env.RUNNING_PLACE === "replit") {
+  if (process.env.EXECUTION_LOCATION === "replit") {
     client.login(process.env.TOKEN).catch(console.error);
-  } else if (process.env.RUNNING_PLACE === "local") {
+  } else if (process.env.EXECUTION_LOCATION === "local") {
     client.login(process.env.TEST_TOKEN).catch(console.error);
   }
 } catch (e) {

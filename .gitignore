@@ -1,8 +1,5 @@
 #Config
 .env
-.sh
-/reboot.js
-/reboot.sh
 
 # Logs
 logs

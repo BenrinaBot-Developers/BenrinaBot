@@ -6,4 +6,4 @@ require("./tests/rpc.js");
 require("./tests/hashTag.js");
 
 require("./logger/event.js")
-require("./database/manager.js");
+require("../database/manager.js");

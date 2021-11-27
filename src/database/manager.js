@@ -1,7 +1,5 @@
 "use strict";
 
-const { workerData } = require("worker_threads");
-
 const { Collection } = require("discord.js");
 const { client } = require("../util.js");
 

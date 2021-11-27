@@ -12,8 +12,6 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 const client = require('../util.js').client;
 
-const fetch = require('node-fetch');
-
 const Logger = require("./Logger.js");
 const { CommandError } = require("./ApplicationError.js");
 

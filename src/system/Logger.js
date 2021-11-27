@@ -5,7 +5,6 @@ const { inlineCode, codeBlock } = require("@discordjs/builders");
 
 const functions = require("../functions.js");
 const { client, systemLogChannels, getTime } = require("../util.js");
-const dbutil = require("../dbutil.js");
 
 try {
   require("dotenv").config();
@@ -27,6 +26,7 @@ const log = async (
 
     case Type.ERROR:
       channelIDs = systemLogChannels.error;
+      s;
 
       if ("toCollection" in error) information = information.concat(error.toCollection());
       else information.set(Symbol(codeBlock("js", error?.stack)));

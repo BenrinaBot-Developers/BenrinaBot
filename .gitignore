@@ -1,6 +1,7 @@
 #Config
 .env
 launch.json
+/data
 
 # Logs
 logs

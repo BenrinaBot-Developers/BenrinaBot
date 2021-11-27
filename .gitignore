@@ -1,10 +1,10 @@
 #Config
 .env
 launch.json
-/data
 
 #databse
-
+/data
+/database
 
 # Logs
 logs

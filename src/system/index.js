@@ -3,7 +3,7 @@
 const CommandController = require("./CommandController.js");
 const PageController = require("./PageController.js");
 
-const Database = require("../database/manager.js");
+const Database = require("./DatabaseManager.js");
 const API = require("./API.js");
 const Logger = require("./Logger.js");
 const ApplicationError = require("./ApplicationError.js");

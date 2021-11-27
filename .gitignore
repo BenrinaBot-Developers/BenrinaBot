@@ -3,6 +3,9 @@
 launch.json
 /data
 
+#databse
+
+
 # Logs
 logs
 *.log

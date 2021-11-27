@@ -26,7 +26,6 @@ const log = async (
 
     case Type.ERROR:
       channelIDs = systemLogChannels.error;
-      s;
 
       if ("toCollection" in error) information = information.concat(error.toCollection());
       else information.set(Symbol(codeBlock("js", error?.stack)));

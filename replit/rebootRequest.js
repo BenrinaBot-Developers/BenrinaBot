@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 
 (async () => {
   try {
-    const response = await fetch(`${process.env.REBOOT_URL}?token=${process.env.token}`);
+    const response = await fetch(`${process.env.REBOOT_URL}?token=${process.env.TOKEN}`);
     const text = await response.text();
     console.log(text);
   } catch (error) {

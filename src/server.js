@@ -1,10 +1,10 @@
-'use strict';
-const express = require('express');
+"use strict";
+const express = require("express");
 
 const app = express();
 
-app.get('/reboot', (req, res) => {
-  if (req.query.token !== process.env.token) {
+app.get("/reboot", (req, res) => {
+  if (req.query.token !== process.env.TOKEN) {
     res.send("Invalid token\n");
     return;
   }
@@ -12,8 +12,8 @@ app.get('/reboot', (req, res) => {
   require("../replit/reboot.js");
 });
 
-app.listen('3000', () => {
-  console.log('Application started');
+app.listen("3000", () => {
+  console.log("Application started");
 });
 
 //BOT

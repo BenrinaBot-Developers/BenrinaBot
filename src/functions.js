@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /*
 注意
@@ -9,83 +9,83 @@
 注意提示者:緋音
 コード作成者:みどりむし
 */
-const Discord = require('discord.js');
-const util = require('./util.js');
+const Discord = require("discord.js");
+const util = require("./util.js");
 const client = util.client;
 
 const fs = require("fs").promises;
 const path = require("path");
-const csvParse = require('csv-parse/lib/sync');
+const csvParse = require("csv-parse/lib/sync");
 
 //クラス多重継承
-const aggregationClass = function(...mixins) {
+const aggregationClass = function (...mixins) {
   class Mix {
     constructor(...args) {
-      this.initialize && this.initialize(...args)
+      this.initialize && this.initialize(...args);
 
       for (let i in mixins) {
-        const newMixin = new mixins[i](...args)
+        const newMixin = new mixins[i](...args);
 
-        copyProperties(this, newMixin)
-        copyProperties(this.prototype, newMixin.prototype)
+        copyProperties(this, newMixin);
+        copyProperties(this.prototype, newMixin.prototype);
       }
     }
   }
 
   for (let i in mixins) {
-    const mixin = mixins[i]
+    const mixin = mixins[i];
 
-    copyProperties(Mix, mixin)
-    copyProperties(Mix.prototype, mixin.prototype)
+    copyProperties(Mix, mixin);
+    copyProperties(Mix.prototype, mixin.prototype);
   }
-  return Mix
+  return Mix;
 };
 exports.aggregationClass = aggregationClass;
 
 function copyProperties(target = {}, source = {}) {
-  const ownPropertyNames = Object.getOwnPropertyNames(source)
+  const ownPropertyNames = Object.getOwnPropertyNames(source);
   ownPropertyNames
-    .filter(key => !/^(prototype|name|constructor)$/.test(key))
-    .forEach(key => {
-      const desc = Object.getOwnPropertyDescriptor(source, key)
-      Object.defineProperty(target, key, desc)
-    })
-};
+    .filter((key) => !/^(prototype|name|constructor)$/.test(key))
+    .forEach((key) => {
+      const desc = Object.getOwnPropertyDescriptor(source, key);
+      Object.defineProperty(target, key, desc);
+    });
+}
 
 exports.lcm = (...args) => {
   const a = args;
-  const g = (n, m) => m ? g(m, n % m) : n
-  const l = (n, m) => n * m / g(n, m)
-  let ans = a[0]
+  const g = (n, m) => (m ? g(m, n % m) : n);
+  const l = (n, m) => (n * m) / g(n, m);
+  let ans = a[0];
 
   for (let i = 1; i < a.length; i++) {
-    ans = l(ans, a[i])
+    ans = l(ans, a[i]);
   }
   return ans;
-}
+};
 
 exports.gcd = (...args) => {
-  const f = (a, b) => b ? f(b, a % b) : a
-  let ans = args[0]
+  const f = (a, b) => (b ? f(b, a % b) : a);
+  let ans = args[0];
   for (let i = 1; i < args.length; i++) {
     ans = f(ans, args[i]);
   }
   return ans;
-}
+};
 
 exports.createItemizedList = (values) => {
   values.forEach((_value, _tag) => {
-    if (_tag ?.description === "$") outputStr += "\n";
+    if (_tag?.description === "$") outputStr += "\n";
     else outputStr += `${_tag}: ${_value}\n`;
-  })
-}
+  });
+};
 
-Object.defineProperty(Array.prototype, 'sum', {
+Object.defineProperty(Array.prototype, "sum", {
   value() {
     return this.reduce((_prev, _current) => _prev + _current);
   },
   enumerable: true,
-  configurable: true
+  configurable: true,
 });
 //console.log([1,2,3,4,5,6,7,8,9,10].sum());
 
@@ -108,13 +108,13 @@ Object.defineProperties(Discord.Collection.prototype, {
       }
       if (now.size) splitted.push(now);
       return splitted;
-    }
-  }
+    },
+  },
 });
 
 const i = (key, name) => {
   return new Discord.Collection([[key, name]]);
-}
+};
 const a = new Discord.Collection()
   .set("aaa", i("a", 1))
   .set("bbb", i("b", 2))
@@ -149,36 +149,37 @@ if (typeof Discord.Collection === 'function' && !('sort' in Discord.Collection.p
 }
 */
 
-String.prototype.replaceHtmlTags = function(_after = "") {
-  return this.replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, _after)
+String.prototype.replaceHtmlTags = function (_after = "") {
+  return this.replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi, _after);
 };
 
-(async function() {
+(async function () {
   const characterCodes = await fs.readFile(
-    path.relative(process.cwd(), `${__dirname}/assets/htmlEntityReferencesCodes.csv`), "utf-8"
-  )
-  const data = await csvParse(characterCodes, { columns: true, ltrim: true, rtrim: true, escape: '\\' })
+    path.relative(process.cwd(), `${__dirname}/assets/htmlEntityReferencesCodes.csv`),
+    "utf-8"
+  );
+  const data = await csvParse(characterCodes, { columns: true, ltrim: true, rtrim: true, escape: "\\" });
   const replaceList = new Discord.Collection();
-  data.forEach(_datum => {
+  data.forEach((_datum) => {
     return replaceList.set(_datum.code, _datum.character);
-  })
+  });
   //console.log(replaceList)
-  String.prototype.replaceHtmlEntityReferences = function() {
+  String.prototype.replaceHtmlEntityReferences = function () {
     let string = this;
     replaceList.forEach((_character, _code) => {
       string = string.replace(new RegExp(_code, "gi"), _character);
-    })
+    });
     return string;
-  }
+  };
 })();
 
-exports.mention = function(str, type) {
+exports.mention = function (str, type) {
   if (type === 0) {
     //メンションからidを取り出す
-    str.split('<').join('');
-    str.split('>').join('');
-    str.split('@').join('');
-    str.split('!').join('');
+    str.split("<").join("");
+    str.split(">").join("");
+    str.split("@").join("");
+    str.split("!").join("");
     return str;
   } else if (type === 1) {
     //idをメンションにする
@@ -191,12 +192,12 @@ exports.mention = function(str, type) {
   }
 };
 
-exports.chmention = function(str, type) {
+exports.chmention = function (str, type) {
   if (type === 0) {
     //メンションからidを取り出す
-    str.split('<').join('');
-    str.split('>').join('');
-    str.split('#').join('');
+    str.split("<").join("");
+    str.split(">").join("");
+    str.split("#").join("");
     return str;
   } else if (type === 1) {
     //idをメンションにする
@@ -210,20 +211,26 @@ exports.chmention = function(str, type) {
 };
 
 exports.range = (_strat, _end) => {
-  return Array.from(Array(_end - _strat), (v, k) => k + _strat)
-}
+  return Array.from(Array(_end - _strat), (v, k) => k + _strat);
+};
 
 exports.splitTextLength = (text, { length = 2000 } = {}) => {
   const letters = [...text];
-  return letters.reduce((acc, c, i) => i % length ? acc : [...acc, letters.slice(i, i + length).join('')], []);
-}
+  return letters.reduce((acc, c, i) => (i % length ? acc : [...acc, letters.slice(i, i + length).join("")]), []);
+};
 
-exports.send = async function(_chID, _message) {
+try {
+  require("dotenv").config();
+} catch (e) {
+  console.error(e);
+}
+exports.send = async function (_chID, _message) {
+  if (process.env.EXECUTION_LOCATION !== "replit") return;
   const channel = await client.channels.fetch(_chID);
   return channel.send(_message);
 };
 
-exports.getEmbed = function(color, title, description, timestamp) {
+exports.getEmbed = function (color, title, description, timestamp) {
   let embed = new Discord.MessageEmbed().setColor(color).setTitle(title);
   if (description) {
     embed.setDescription(description);
@@ -234,7 +241,7 @@ exports.getEmbed = function(color, title, description, timestamp) {
   return embed;
 };
 
-exports.arrayShuffle = array => {
+exports.arrayShuffle = (array) => {
   let shuffled = [].concat(array);
   for (let i = shuffled.length - 1; i >= 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -253,7 +260,7 @@ exports.randomArraySelectWithWeight = (choices, weights) => {
   return exports.randomArraySelect(array);
 };
 
-exports.randomArraySelect = array => {
+exports.randomArraySelect = (array) => {
   return array[exports.random(0, array.length - 1)];
 };
 
@@ -262,27 +269,24 @@ exports.random = (min, max) => {
 };
 
 exports.isObject = (val) => {
-  return val !== null
-    && typeof (val) === 'object'
-    && val.constructor === Object
-}
+  return val !== null && typeof val === "object" && val.constructor === Object;
+};
 
 exports.filterUsersByPermissions = async (_guild, [_names]) => {
   _name = _name.flat(Infinity);
   const members = await _guild.members.fetch();
-  return members.filter(member => member.permissions.any(_names));
-}
-
-exports.dateToString = (date, format = 'YYYY/MM/DD hh:mm:ss') => {
-  format = format.replace(/YYYY/g, date.getFullYear());
-  format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
-  format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
-  format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
-  format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
-  format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
-  return format;
+  return members.filter((member) => member.permissions.any(_names));
 };
 
+exports.dateToString = (date, format = "YYYY/MM/DD hh:mm:ss") => {
+  format = format.replace(/YYYY/g, date.getFullYear());
+  format = format.replace(/MM/g, ("0" + (date.getMonth() + 1)).slice(-2));
+  format = format.replace(/DD/g, ("0" + date.getDate()).slice(-2));
+  format = format.replace(/hh/g, ("0" + date.getHours()).slice(-2));
+  format = format.replace(/mm/g, ("0" + date.getMinutes()).slice(-2));
+  format = format.replace(/ss/g, ("0" + date.getSeconds()).slice(-2));
+  return format;
+};
 
 //オブジェクトをディープコピーするための関数;
 //第一引数はコピーさせたいオブジェクトを渡す;
@@ -297,33 +301,39 @@ exports.dateToString = (date, format = 'YYYY/MM/DD hh:mm:ss') => {
 //clone(object, homogeneity, excludedPrototypes, excludedObjects);
 
 //https://webkatu.com/20140713-clone-function-to-deepcopy-object/
-let clone = (function() {
+let clone = (function () {
   //引数の型を返す関数;
-  let typeOf = function(operand) {
+  let typeOf = function (operand) {
     return Object.prototype.toString.call(operand).slice(8, -1);
   };
 
   //引数がプリミティブかオブジェクトか判定;
-  let isPrimitive = function(type) {
+  let isPrimitive = function (type) {
     if (type === null) {
       return true;
     }
-    if (typeof type === 'object' || typeof type === 'function') {
+    if (typeof type === "object" || typeof type === "function") {
       return false;
     }
     return true;
   };
 
   //アクセサプロパティかデータプロパティか判定;
-  let isAccessorDescriptor = function(descriptor) {
-    return 'get' in descriptor;
+  let isAccessorDescriptor = function (descriptor) {
+    return "get" in descriptor;
   };
 
   //descriptorを同じにせず、get,set,value以外のdescriptor全てtrueのプロパティを定義;
-  let defineProperty = function(cloneObject, propName, descriptor, cloneParams) {
+  let defineProperty = function (cloneObject, propName, descriptor, cloneParams) {
     //cloneの引数が多すぎるのでbindする;
-    let boundClone = function(object) {
-      return clone(object, cloneParams.homogeneity, cloneParams.excludedPrototypes, cloneParams.excludedObjects, cloneParams.memo);
+    let boundClone = function (object) {
+      return clone(
+        object,
+        cloneParams.homogeneity,
+        cloneParams.excludedPrototypes,
+        cloneParams.excludedObjects,
+        cloneParams.memo
+      );
     };
 
     if (isAccessorDescriptor(descriptor)) {
@@ -347,10 +357,16 @@ let clone = (function() {
   };
 
   //descriptorが同じプロパティを定義する;
-  let equalizeDescriptor = function(cloneObject, propName, descriptor, cloneParams) {
+  let equalizeDescriptor = function (cloneObject, propName, descriptor, cloneParams) {
     //cloneの引数が多すぎるのでbindする;
-    let boundClone = function(object) {
-      return clone(object, cloneParams.homogeneity, cloneParams.excludedPrototypes, cloneParams.excludedObjects, cloneParams.memo);
+    let boundClone = function (object) {
+      return clone(
+        object,
+        cloneParams.homogeneity,
+        cloneParams.excludedPrototypes,
+        cloneParams.excludedObjects,
+        cloneParams.memo
+      );
     };
 
     if (isAccessorDescriptor(descriptor)) {
@@ -374,7 +390,7 @@ let clone = (function() {
   };
 
   //objectの拡張可属性を同じにする;
-  let equalizeExtensible = function(object, cloneObject) {
+  let equalizeExtensible = function (object, cloneObject) {
     if (Object.isFrozen(object)) {
       Object.freeze(cloneObject);
       return;
@@ -385,14 +401,14 @@ let clone = (function() {
     }
     if (Object.isExtensible(object) === false) {
       Object.preventExtensions(cloneObject);
-      return
+      return;
     }
   };
 
   //型を作成するオブジェクト;
   let sameTypeCreater = {
     //引数のobjectの型と同一の型を返すメソッド;
-    create: function(object) {
+    create: function (object) {
       let type = typeOf(object);
       let method = this[type];
 
@@ -402,39 +418,39 @@ let clone = (function() {
       }
       return this[type](object);
     },
-    Object: function(object) {
+    Object: function (object) {
       //自作クラスはprototype継承される
       return Object.create(Object.getPrototypeOf(object));
     },
-    Array: function(object) {
+    Array: function (object) {
       return new Array();
     },
-    Function: function(object) {
+    Function: function (object) {
       //ネイティブ関数オブジェクトはcloneできないのでnullを返す;
       try {
         let anonymous;
-        eval('anonymous = ' + object.toString());
+        eval("anonymous = " + object.toString());
         return anonymous;
       } catch (e) {
         return null;
       }
     },
-    Error: function(object) {
+    Error: function (object) {
       new Object.getPrototypeOf(object).constructor();
     },
-    Date: function(object) {
+    Date: function (object) {
       new Date(object.valueOf());
     },
-    RegExp: function(object) {
+    RegExp: function (object) {
       new RegExp(object.valueOf());
     },
-    Boolean: function(object) {
+    Boolean: function (object) {
       new Boolean(object.valueOf());
     },
-    String: function(object) {
+    String: function (object) {
       new String(object.valueOf());
     },
-    Number: function(object) {
+    Number: function (object) {
       new Number(object.valueOf());
     },
   };
@@ -442,13 +458,13 @@ let clone = (function() {
   //memoオブジェクトを作る関数;
   //一度コピーされたオブジェクトはmemoオブジェクトに保存され;
   //二度コピーすることがないようにする(循環参照対策);
-  let createMemo = function() {
+  let createMemo = function () {
     let memo = new Object();
-    let types = ['Object', 'Array', 'Function', 'Error', 'Date', 'RegExp', 'Boolean', 'String', 'Number'];
-    types.forEach(function(type) {
+    let types = ["Object", "Array", "Function", "Error", "Date", "RegExp", "Boolean", "String", "Number"];
+    types.forEach(function (type) {
       memo[type] = {
         objects: [],
-        cloneObjects: []
+        cloneObjects: [],
       };
     });
     return memo;
@@ -479,15 +495,14 @@ let clone = (function() {
 
     //循環参照対策 objectが既にmemoに保存されていれば内部参照なので、値渡しではなくcloneObjectに参照先を切り替えたobjectを返す;
     let type = typeOf(object);
-    let index = memo[type]['objects'].indexOf(object);
+    let index = memo[type]["objects"].indexOf(object);
     if (index !== -1) {
-      return memo[type]['cloneObjects'][index];
+      return memo[type]["cloneObjects"][index];
     }
 
     //循環参照対策 objectはcloneObjectとセットでmemoに追加;
-    memo[type]['objects'].push(object);
-    memo[type]['cloneObjects'].push(cloneObject);
-
+    memo[type]["objects"].push(object);
+    memo[type]["cloneObjects"].push(cloneObject);
 
     let propNames = Object.getOwnPropertyNames(object);
     let cloneParams = {
@@ -497,7 +512,7 @@ let clone = (function() {
       memo: memo,
     };
     //objectのすべてのプロパティを再帰的にcloneして、cloneObjectのプロパティに加える;
-    propNames.forEach(function(propName) {
+    propNames.forEach(function (propName) {
       let descriptor = Object.getOwnPropertyDescriptor(object, propName);
 
       if (propName in cloneObject) {
@@ -526,8 +541,8 @@ let clone = (function() {
     return cloneObject;
   }
 
-  return function(object, homogeneity, excludedPrototypes, excludedObjects) {
-    if (homogeneity === null || typeof homogeneity !== 'object') {
+  return function (object, homogeneity, excludedPrototypes, excludedObjects) {
+    if (homogeneity === null || typeof homogeneity !== "object") {
       homogeneity = {};
     }
     if (!Array.isArray(excludedPrototypes)) {

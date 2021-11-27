@@ -55,6 +55,11 @@ try {
     }, 1000 * 5);
   });
 
+  try {
+    require("dotenv").config();
+  } catch (e) {
+    console.error(e);
+  }
   if (process.env.EXECUTION_LOCATION === "replit") {
     client.login(process.env.TOKEN).catch(console.error);
   } else if (process.env.EXECUTION_LOCATION === "local") {

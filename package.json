@@ -10,6 +10,7 @@
     "csv-parse": "~4.16.3",
     "discord.js": "~13.3.1",
     "discord.js-reaction-controller": "^2.1.1",
+    "dotenv": "^10.0.0",
     "enmap": "~5.8.7",
     "express": "^4.17.1",
     "moment-timezone": "~0.5.34"
@@ -19,7 +20,7 @@
   },
   "scripts": {
     "start": "node ./src/server.js",
-    "exit": "node exit.js"
+    "reboot-repl": "node ./replit/rebootRequest.js"
   },
   "author": "",
   "license": "MIT"

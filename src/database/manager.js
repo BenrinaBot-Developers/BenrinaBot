@@ -10,7 +10,6 @@ const { DatabaseError } = require("../system/ApplicationError.js");
 const fs = require("fs");
 
 class Cache {
-  #intervals;
   #lastKeyName;
   #initialData;
   #tags;

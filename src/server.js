@@ -5,7 +5,7 @@ const app = express();
 
 app.get('/reboot', (req, res) => {
   res.send("exit");
-  require("../reboot.js");
+  require("../replit/reboot.js");
 });
 
 app.listen('3000', () => {

@@ -1,23 +1,32 @@
-'use strict';
+"use strict";
 
-const {MessageEmbed, MessageActionRow, MessageButton, Collection} = require('discord.js');
-const client = require('../util.js').client;
+const { MessageEmbed, MessageActionRow, MessageButton, Collection } = require("discord.js");
+const client = require("../util.js").client;
 
 const functions = require("../functions.js");
 
 const controllers = new Collection();
-client.on('interactionCreate', interaction => {
+client.on("interactionCreate", (interaction) => {
   const interactionID = interaction?.message?.interaction?.id;
   if (!interaction.isButton() || !controllers.has(interactionID)) return;
-  controllers.get(interactionID).$action(interaction)
+  controllers.get(interactionID).$action(interaction);
 });
 
 class PageController {
-  constructor({startPage = 0, firstPageNumber = 1, title = null, endMessage = {}, pageLoop = false, pageNumber = false, displayPageNumberEmbeds = "last", authors} = {}){
+  constructor({
+    startPage = 0,
+    firstPageNumber = 1,
+    title = null,
+    endMessage = {},
+    pageLoop = false,
+    pageNumber = false,
+    displayPageNumberEmbeds = "last",
+    authors,
+  } = {}) {
     this.authors = authors;
     this.pageCount = startPage;
     this.firstPageNumber = firstPageNumber;
-    this.title = title
+    this.title = title;
     this.endMessage = endMessage;
     this.pageLoop = pageLoop;
     this.pageNumber = pageNumber;
@@ -25,58 +34,57 @@ class PageController {
 
     //console.log(this)
     this.pages = [];
-  }  
-  
-  #getButtons(_disabled = false){
+  }
+
+  #getButtons(_disabled = false) {
     return new MessageActionRow()
-		  .addComponents(
-        new MessageButton()
-	        .setCustomId("left").setLabel("◀").setStyle("PRIMARY").setDisabled(_disabled)
-          //.setCustomId("left").setStyle("PRIMARY").setEmoji("◀").setDisabled(_disabled)
-      ).addComponents(
-        new MessageButton()
-	        .setCustomId("right").setLabel("▶").setStyle("PRIMARY").setDisabled(_disabled)
-	        //.setCustomId("right").setStyle("PRIMARY").setEmoji("▶️").setDisabled(_disabled)
-      ).addComponents(
-        new MessageButton()
-	        .setCustomId("stop").setLabel("■").setStyle("DANGER").setDisabled(_disabled)
+      .addComponents(
+        new MessageButton().setCustomId("left").setLabel("◀").setStyle("PRIMARY").setDisabled(_disabled)
+        //.setCustomId("left").setStyle("PRIMARY").setEmoji("◀").setDisabled(_disabled)
       )
+      .addComponents(
+        new MessageButton().setCustomId("right").setLabel("▶").setStyle("PRIMARY").setDisabled(_disabled)
+        //.setCustomId("right").setStyle("PRIMARY").setEmoji("▶️").setDisabled(_disabled)
+      )
+      .addComponents(new MessageButton().setCustomId("stop").setLabel("■").setStyle("DANGER").setDisabled(_disabled));
   }
 
-  #getPageDisplayers(_length){
-      switch(this.displayPageNumberEmbeds){
-        case "all":
-          return functions.range(0, _length)
-          break;
-        case "last":
-          return [_length - 1]
-          break;
-        default:
-          if(this.displayPageNumberEmbeds.constructor == Number){
-            return [this.displayPageNumberEmbeds]
+  #getPageDisplayers(_length) {
+    switch (this.displayPageNumberEmbeds) {
+      case "all":
+        return functions.range(0, _length);
+        break;
+      case "last":
+        return [_length - 1];
+        break;
+      default:
+        if (this.displayPageNumberEmbeds.constructor == Number) {
+          return [this.displayPageNumberEmbeds];
         } else {
-          return this.displayPageNumberEmbeds
+          return this.displayPageNumberEmbeds;
         }
-      }
+    }
   }
 
-  #assignPageNumber(_message, _pageNumber, _displayers){
-    if(this.pageNumber){
-      return _displayers.forEach(_index => {
+  #assignPageNumber(_message, _pageNumber, _displayers) {
+    if (this.pageNumber) {
+      return _displayers.forEach((_index) => {
         //console.log(_index, _message)
-        _message?.embeds[_index].setFooter(`#${String(_pageNumber)}/${String(this.pages.length + this.firstPageNumber - 1)}`)
+        _message?.embeds[_index].setFooter(
+          `#${String(_pageNumber)}/${String(this.pages.length + this.firstPageNumber - 1)}`
+        );
       });
     }
   }
-  
-  async $action(_interaction){
-      //console.log(_interaction)
-	    //if (!_interaction.isButton() || _interaction?.message.interaction.id != this.from.id) return;
-      if(this.authors?.constructor == Array && !this.authors?.includes(_interaction.user.id)) {
-        _interaction.deferUpdate();
-        return
-      };
- 	    switch(_interaction.customId){
+
+  async $action(_interaction) {
+    //console.log(_interaction)
+    //if (!_interaction.isButton() || _interaction?.message.interaction.id != this.from.id) return;
+    if (this.authors?.constructor == Array && !this.authors?.includes(_interaction.user.id)) {
+      _interaction.deferUpdate();
+      return;
+    }
+    switch (_interaction.customId) {
       case "left":
         this.pageCount--;
         break;
@@ -84,56 +92,62 @@ class PageController {
         this.pageCount++;
         break;
       case "stop":
-        await _interaction.update(Object.assign({}, this.endMessage, {components: [this.#getButtons(true)]}));
+        await _interaction.update(Object.assign({}, this.endMessage, { components: [this.#getButtons(true)] }));
         controllers.delete(this.from.id);
         return;
       default:
         return;
+    }
+    if (this.pageCount < 0) {
+      this.pageCount = 0;
+      if (this.pageLoop) {
+        this.pageCount = this.pages.length - 1;
       }
-      if(this.pageCount < 0 ){
-        this.pageCount = 0
-        if(this.pageLoop){
-          this.pageCount = this.pages.length - 1
-        }
+    }
+    if (this.pageCount >= this.pages.length) {
+      this.pageCount = this.pages.length - 1;
+      if (this.pageLoop) {
+        this.pageCount = 0;
       }
-      if(this.pageCount >= this.pages.length){
-        this.pageCount = this.pages.length - 1
-        if(this.pageLoop){
-          this.pageCount = 0
-        }
-      }
-      let message = this.pages[this.pageCount]
-      this.#assignPageNumber(message, this.pageCount + this.firstPageNumber,
-        this.#getPageDisplayers(message.embeds.length));
-      await _interaction.update(message)
+    }
+    let message = this.pages[this.pageCount];
+    this.#assignPageNumber(
+      message,
+      this.pageCount + this.firstPageNumber,
+      this.#getPageDisplayers(message.embeds.length)
+    );
+    await _interaction.update(message);
   }
 
   begin(from) {
-    this.from = from
+    this.from = from;
 
-    let message = {components: [this.#getButtons()]}
-    message.embeds =  this.pages[this.pageCount].embeds;
+    let message = { components: [this.#getButtons()] };
+    message.embeds = this.pages[this.pageCount].embeds;
 
-    this.#assignPageNumber(message, this.pageCount + this.firstPageNumber,
-      this.#getPageDisplayers(message.embeds.length));
-    if(this.title){
+    this.#assignPageNumber(
+      message,
+      this.pageCount + this.firstPageNumber,
+      this.#getPageDisplayers(message.embeds.length)
+    );
+    if (this.title) {
       message.content = this.title;
-    }   
-	//console.log(from)
-    controllers.set(from.id, this)
+    }
+    //console.log(from)
+    controllers.set(from.id, this);
     //console.log(controllers)
     return message;
   }
 
-  addPages(..._pages){
-    this.pages.push(..._pages)
+  addPages(..._pages) {
+    this.pages.push(..._pages);
     //console.log(this.pages);
   }
-  deletePages(_start, _count){
-    this.pages.splice(_start, _count) 
+  deletePages(_start, _count) {
+    this.pages.splice(_start, _count);
   }
 }
 
 module.exports = {
-  PageController
-}
+  PageController,
+};

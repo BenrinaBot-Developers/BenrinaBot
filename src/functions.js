@@ -219,13 +219,7 @@ exports.splitTextLength = (text, { length = 2000 } = {}) => {
   return letters.reduce((acc, c, i) => (i % length ? acc : [...acc, letters.slice(i, i + length).join("")]), []);
 };
 
-try {
-  require("dotenv").config();
-} catch (e) {
-  console.error(e);
-}
 exports.send = async function (_chID, _message) {
-  if (process.env.EXECUTION_LOCATION !== "replit") return;
   const channel = await client.channels.fetch(_chID);
   return channel.send(_message);
 };

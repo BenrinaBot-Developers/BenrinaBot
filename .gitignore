@@ -1,6 +1,5 @@
 #Config
 .env
-launch.json
 
 #databse
 /data

@@ -105,6 +105,10 @@ pages[1] = {
             name: "・compose",
             value: "AIが作曲するよ！ちょっと時間かかるよ！",
           },
+          {
+            name: "・rnd",
+            value: "乱数をやるよ",
+          },
 		  {
             name: "・map <type>",
             value: "鯖のマップを表示するよ！テキストとファイルで選べるよ！",

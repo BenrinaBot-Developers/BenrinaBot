@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const Discord = require("discord.js");
 const functions = require("../functions.js");
@@ -40,18 +40,20 @@ const errwarn = function (message, log) {
   }
 
   //console.log("loged")
-  message.channel.send({embeds:[
-    functions.getEmbed(
-      0xff0000,
-      warn,
-      `
+  message.channel.send({
+    embeds: [
+      functions.getEmbed(
+        0xff0000,
+        warn,
+        `
 			メッセージの内容:\`${message.content}\`\n
 			実行者:\`${message.author.username}#${message.author.discriminator}\`\n
 			エラータイプ:\`${status}\`\n
 			メッセージ:\`${msg}\`\n
 			コマンドが合っているにもかかわらずエラーが出た場合は開発者へご連絡ください。`,
-      true,
-    ),]}
-  );
+        true
+      ),
+    ],
+  });
 };
 exports.errwarn = errwarn;

@@ -1,11 +1,11 @@
 "use strict";
 
 const { Collection } = require("discord.js");
-const { client } = require("../util.js");
+const { client } = require("../src/util.js");
 
-const { isObject } = require("../functions.js");
-const Logger = require("../system/Logger.js");
-const { DatabaseError } = require("../system/ApplicationError.js");
+const { isObject } = require("../src/functions.js");
+const Logger = require("../src/system/Logger.js");
+const { DatabaseError } = require("../src/system/ApplicationError.js");
 
 const fs = require("fs");
 
@@ -92,7 +92,7 @@ class Cache {
     return this.#getPath(this.fileSelecter ? "A" : "B");
   }
   #getPath(_selecter) {
-    return `${__dirname}/cache/L${this.level}/${_selecter}/${this.type}.json`;
+    return `./database/cache/L${this.level}/${_selecter}/${this.type}.json`;
   }
 
   get size() {

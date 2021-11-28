@@ -107,7 +107,7 @@ pages[1] = {
           },
           {
             name: "・rnd",
-            value: "乱数",
+            value: "乱数をやるよ",
           },
 		  {
             name: "・map <type>",

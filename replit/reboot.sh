@@ -1,2 +1,2 @@
 git pull origin develop
-busybox reboot
+#busybox reboot

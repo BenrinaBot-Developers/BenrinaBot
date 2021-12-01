@@ -8,7 +8,7 @@ const functions = require("../functions.js");
 
 module.exports = async function* (arg1) {
   const db = new Database.CacheManager("normal");
-  await db.begin();
+  //await db.begin();
   const result = await db.get("devComd_test");
   console.log(result);
   yield { embeds: [functions.getEmbed(0x00f521, `Read`, `Result: ${result.data.first()}`, true)] };

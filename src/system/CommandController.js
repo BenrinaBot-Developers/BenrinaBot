@@ -23,7 +23,8 @@ class BaseCommand extends SlashCommandBuilder {
     this.execute = _definition.execute;
     this.type = _definition.type; // global or guild
     if (this.type === BaseCommand.Type.GUILD) {
-      this.guildIDs = _definition.guildIDs?.filter((_guildID) => client.guilds.cache.has(_guildID)) ?? new Array(1).fill();
+      this.guildIDs =
+        _definition.guildIDs?.filter((_guildID) => client.guilds.cache.has(_guildID)) ?? new Array(1).fill();
     } else if (this.type === BaseCommand.Type.GLOBAL) {
       this.guildIDs = [null];
     } else {
@@ -202,7 +203,7 @@ class BaseCommandManager {
     this.commands = new Collection();
   }
   generateHelp() {
-    return new CommandHelp(this.commands.map((_command, _name) => new CommandInfomation(_name, _command.data)));
+    return new CommandHelp(this.commands.map((_command, _name) => new CommandInformation(_name, _command.data)));
   }
 }
 
@@ -331,7 +332,9 @@ class SlashCommandManager extends BaseCommandManager {
           if (_subCommand) commandName += "." + _subCommand;
 
           const argumentsString =
-            _command.argumentTypes === SlashCommand.ArgumentType.OBJECT ? JSON.stringify(_arguments) : _arguments.map((_arg) => `"${String(_arg)}"`).join(",");
+            _command.argumentTypes === SlashCommand.ArgumentType.OBJECT
+              ? JSON.stringify(_arguments)
+              : _arguments.map((_arg) => `"${String(_arg)}"`).join(",");
           Logger.log(Logger.Type.COMMAND, {
             command: _command.name,
             message: {
@@ -432,7 +435,7 @@ class CommandArgument extends Collection {
   }
 }
 
-class CommandInfomation extends Collection {
+class CommandInformation extends Collection {
   constructor(_name, _data) {
     super();
     Object.defineProperty(this, "name", { value: _name });
@@ -524,7 +527,7 @@ class IntegratedCommandManager {
 }
 
 class CommandController extends IntegratedCommandManager {
-  createInfomationList() {
+  createInformationList() {
     return this.Slash.generateHelp().concat(this.Message.generateHelp());
   }
   generateHelpEmbed(_options) {

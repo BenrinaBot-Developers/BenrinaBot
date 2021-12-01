@@ -1,2 +1,2 @@
-git pull origin develop
+#git pull origin develop
 npm start

@@ -11,4 +11,4 @@ for (var key in require.cache) {
   delete require.cache[key];
 }
 
-require("../src/bot.js");
+//require("../src/bot.js");

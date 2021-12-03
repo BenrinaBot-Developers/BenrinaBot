@@ -9,7 +9,7 @@ app.get("/reboot", (req, res) => {
     return;
   }
   res.send("Rebooting\n");
-  require("../replit/reboot.js");
+  require("../replit/reboot.js").reboot();
 });
 
 app.listen("3000", () => {

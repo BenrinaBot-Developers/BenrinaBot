@@ -2,7 +2,7 @@ const exec = require("child_process").exec;
 
 const { client } = require("../src/util.js");
 
-exports.reboot = () => {
+exports.reboot = async () => {
   exec("sh git pull origin develop", (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
@@ -15,8 +15,6 @@ exports.reboot = () => {
     delete require.cache[key];
   }
 
-  (async () => {
-    await client.destroy();
-    require("../src/bot.js");
-  })();
+  await client.destroy();
+  require("../src/bot.js");
 };

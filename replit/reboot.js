@@ -4,7 +4,7 @@ const { client } = require("../src/util.js");
 
 module.exports.reboot = async () => {
   console.log("reboot");
-  exec("sh git pull origin develop", (error, stdout, stderr) => {
+  exec("git pull origin develop", (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (error !== null) {

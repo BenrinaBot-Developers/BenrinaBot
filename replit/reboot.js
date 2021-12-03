@@ -2,7 +2,7 @@ const exec = require("child_process").exec;
 
 const { client } = require("../src/util.js");
 
-exports.reboot = async () => {
+module.exports.reboot = async () => {
   console.log("reboot");
   exec("sh git pull origin develop", (error, stdout, stderr) => {
     console.log(stdout);

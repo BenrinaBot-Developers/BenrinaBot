@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "node ./src/server.js",
-    "reboot-repl": "node ./replit/rebootRequest.js"
+    "reboot-repl": "node ./replit/rebootRequest.js run"
   },
   "author": "",
   "license": "MIT"

@@ -2,6 +2,8 @@ require("dotenv").config();
 
 const fetch = require("node-fetch");
 
+if (process.argv[2] !== "run") return;
+
 (async () => {
   try {
     const response = await fetch(`${process.env.REBOOT_URL}?token=${process.env.TOKEN}`);

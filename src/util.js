@@ -20,7 +20,7 @@ const getTime = function (_date = new Date()) {
 };
 exports.getTime = getTime;
 
-const slashguild = ["884000150610149446","878512058088423454",'878265923709075486','881341804627247104']//rokkyo and dev
+const slashguild = ["878512058088423454"]//rokkyo and dev
 exports.slashguild = slashguild;
 
 const { Intents, Client } = Discord;

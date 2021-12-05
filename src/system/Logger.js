@@ -16,16 +16,16 @@ const log = async (
   { date, command, method, message, error, data, response: { config: apiConfig, data: apiResponse } = {} }
 ) => {
   if (process.env.EXECUTION_LOCATION !== "replit") return;
-  let channelIDs;
+  let channelIds;
   let information = new Collection();
   switch (type) {
     case Type.START_UP:
-      channelIDs = systemLogChannels.start_up;
+      channelIds = systemLogChannels.start_up;
       information.set("StartsAt", getTime(date));
       break;
 
     case Type.ERROR:
-      channelIDs = systemLogChannels.error;
+      channelIds = systemLogChannels.error;
 
       if ("toCollection" in error) information = information.concat(error.toCollection());
       else information.set(Symbol(codeBlock("js", error?.stack)));
@@ -34,21 +34,21 @@ const log = async (
       break;
 
     case Type.COMMAND:
-      channelIDs = systemLogChannels.command;
+      channelIds = systemLogChannels.command;
       information
         .set("Command", command)
         .set(Symbol("$"))
         .set("Message", inlineCode(message?.content))
         .set("User", `${message?.author} [${message?.author.tag}] (${message?.author.id})`)
         .set(Symbol("$"))
-        .set("ID", message?.id)
+        .set("Id", message?.id)
         .set(Symbol("$"))
         .set("Guild", `${message?.guild} (${message?.guild?.id})`)
         .set("Channel", `${message?.channel} [${message?.channel?.name}] (${message?.channel?.id})`);
       break;
 
     case Type.API:
-      channelIDs = systemLogChannels.api;
+      channelIds = systemLogChannels.api;
       const replacers = {
         response(key, value) {
           if (!key) return value;
@@ -66,7 +66,7 @@ const log = async (
       break;
 
     case Type.DATABASE:
-      channelIDs = systemLogChannels.database;
+      channelIds = systemLogChannels.database;
       information.set("Method", `\`${method}\``);
       if (data) information.set("Data/Content", codeBlock("json", JSON.stringify(data, null, 2)));
       break;
@@ -85,30 +85,30 @@ const log = async (
       informationString += `${_tag}: ${_content}\n`;
     }
   });
-  //console.log(response.data, information, informationString, channelIDs);
+  //console.log(response.data, information, informationString, channelIds);
   let channelTags = [];
-  const sentChannelIDs = [];
+  const sentChannelIds = [];
   //const title = type === Type.ERROR && error?.type ? error.type : type.description;
   const title = type.description;
-  channelIDs.forEach((_chID) => {
-    //console.log(_chID)
-    channelTags.push(`<#${_chID}>`);
-    sentChannelIDs.push(
-      functions.send(_chID, { embeds: [functions.getEmbed(0x00ff00, title, informationString)] }).catch(console.log)
+  channelIds.forEach((_chId) => {
+    //console.log(_chId)
+    channelTags.push(`<#${_chId}>`);
+    sentChannelIds.push(
+      functions.send(_chId, { embeds: [functions.getEmbed(0x00ff00, title, informationString)] }).catch(console.log)
     );
   });
   information = information.filter((_, _key) => typeof _key !== "symbol");
 
   channelTags = channelTags.join(" ");
   //informationString = informationString.replace("\n", " ");
-  systemLogChannels.synthesized.forEach((_chID) => {
-    sentChannelIDs.push(
+  systemLogChannels.synthesized.forEach((_chId) => {
+    sentChannelIds.push(
       functions
-        .send(_chID, `${channelTags}：${title} <${[...information.keys()].join(", ")}>  [${getTime()}]`)
+        .send(_chId, `${channelTags}：${title} <${[...information.keys()].join(", ")}>  [${getTime()}]`)
         .catch(console.log)
     );
   });
-  return Promise.all(sentChannelIDs);
+  return Promise.all(sentChannelIds);
 };
 module.exports.log = log;
 

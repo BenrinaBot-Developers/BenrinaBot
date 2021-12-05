@@ -217,7 +217,7 @@ class BaseDatabaseManager {
     this.#resetQuere(true);
     console.log(this.intervals)
     this.writeCounter = 0;
-    this.currentTimerID;
+    this.currentTimerId;
   }
   async begin() {
     await this.clearCache()

@@ -70,7 +70,7 @@ client.on("messageCreate", message => {
 });
 
 const resend = new SlashCommand({
-  name: "resend_dev", description: "parroting your words", type: SlashCommand.Type.GUILD, guildIDs: ["878512058088423454"],
+  name: "resend_dev", description: "parroting your words", type: SlashCommand.Type.GUILD, guildIds: ["878512058088423454"],
   defaultPermission: false,
   options: [{ type: 3, name: "content", description: "The channel to send", required: true }],
   execute: (_txt) => {
@@ -81,7 +81,7 @@ const resend = new SlashCommand({
 })
 
 const evalCommand = new MessageCommand({
-  prefix: "/bt!", name: "eval", type: SlashCommand.Type.GUILD, guildIDs: ["878512058088423454"], options: { split: false },
+  prefix: "/bt!", name: "eval", type: SlashCommand.Type.GUILD, guildIds: ["878512058088423454"], options: { split: false },
   execute: function(_arguments) {
     let code = _arguments.replace(/^```js\n/, "").replace(/```$/, "");
     let response = (() => {
@@ -107,7 +107,7 @@ const evalCommand = new MessageCommand({
 });
 
 const pageCmd = new SlashCommand({
-  name: "page_test", description: "Show you my helps", type: SlashCommand.Type.GUILD, guildIDs: slashguild,
+  name: "page_test", description: "Show you my helps", type: SlashCommand.Type.GUILD, guildIds: slashguild,
   execute: function() {  //アロー関数は不可
     const pageController = new PageController({
       title: "page_test", pageLoop: true, pageNumber: true, endMessage: { content: "thanks" },
@@ -127,7 +127,7 @@ const test_commands = new CommandController([resend, evalCommand,/*translate, pa
 
 test_commands.addCommand(
   new SlashCommand({
-    name: "cmds-test", description: "Get commandlist.", type: SlashCommand.Type.GUILD, guildIDs: slashguild,
+    name: "cmds-test", description: "Get commandlist.", type: SlashCommand.Type.GUILD, guildIds: slashguild,
     execute() {
       const pageController = new PageController({
         title: "page_test", pageLoop: true, pageNumber: true, endMessage: { content: "thanks" },
@@ -146,8 +146,8 @@ test_commands.addCommand(
   console.log(_returns);
   //test_commands.Slash.remove().then(console.log);
   {  //update
-    resend.permissions = async (_guildID) => {
-      (await functions.filterUsersByPermissions(await client.guilds.fetch(_guildID), "MANAGE_CHANNELS"))
+    resend.permissions = async (_guildId) => {
+      (await functions.filterUsersByPermissions(await client.guilds.fetch(_guildId), "MANAGE_CHANNELS"))
         .map(_user => ({ type: "user", id: _user.id, permission: true })),
         resend.editCommand().catch(console.log);
     }

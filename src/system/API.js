@@ -46,12 +46,12 @@ const fetch = async (method, url, options = {}) => {
 exports.fetch = fetch;
 
 client.on("ready", () => {
-  const appID = "8070c32a-92b3-4cc7-8da0-0fa0807db1e3";
-  const botID = "2389_BebrinaBot1123";
+  const appId = "8070c32a-92b3-4cc7-8da0-0fa0807db1e3";
+  const botId = "2389_BebrinaBot1123";
 
   /*fetch("post", "https://api-sunaba.xaiml.docomo-dialog.com/dialogue", {
-    appId: appID,
-    botId: botID,
+    appId: appId,
+    botId: botId,
     voiceText: "init",
     initTalkingFlag: false,
     language: "ja-JP",
@@ -61,8 +61,8 @@ client.on("ready", () => {
   const connectSunaba = async (message) => {
     const body = await fetch("post", "https://api-sunaba.xaiml.docomo-dialog.com/dialogue", {
       data: {
-        appId: appID,
-        botId: botID,
+        appId: appId,
+        botId: botId,
         clientData: {
           personal: {
             name: message?.author?.toString(),
@@ -95,8 +95,8 @@ const connectWolframAlpha = async (_input, options = {}) => {
 exports.connectWolframAlpha = connectWolframAlpha;
 
 const googleTranslate = async (_input, _to, _from) => {
-  const apiID = "AKfycbw4BF_Fi9VLosgoYzriMXJHGen-2Bl0Zm9uWqze3XwoClc315kL56Ej3igjEdPJD_OSIA";
-  let url = `https://script.google.com/macros/s/${apiID}/exec`;
+  const apiId = "AKfycbw4BF_Fi9VLosgoYzriMXJHGen-2Bl0Zm9uWqze3XwoClc315kL56Ej3igjEdPJD_OSIA";
+  let url = `https://script.google.com/macros/s/${apiId}/exec`;
   const parameters = { text: _input, target: _to };
   if (_from) parms.source = _from;
   const body = await fetch("get", url, { params: parameters });

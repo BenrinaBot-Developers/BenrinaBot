@@ -7,9 +7,9 @@ const functions = require("../functions.js");
 
 const controllers = new Collection();
 client.on("interactionCreate", (interaction) => {
-  const interactionID = interaction?.message?.interaction?.id;
-  if (!interaction.isButton() || !controllers.has(interactionID)) return;
-  controllers.get(interactionID).$action(interaction);
+  const interactionId = interaction?.message?.interaction?.id;
+  if (!interaction.isButton() || !controllers.has(interactionId)) return;
+  controllers.get(interactionId).$action(interaction);
 });
 
 class PageController {

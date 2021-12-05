@@ -203,7 +203,7 @@ class BaseCommandManager {
     this.commands = new Collection();
   }
   generateHelp() {
-    return new CommandHelp(this.commands.map((_command, _name) => new CommandInformation(_name, _command.data)));
+    return new CommandHelp(this.commands.map((_command, _name) => new CommandInfomation(_name, _command.data)));
   }
 }
 
@@ -435,7 +435,7 @@ class CommandArgument extends Collection {
   }
 }
 
-class CommandInformation extends Collection {
+class CommandInfomation extends Collection {
   constructor(_name, _data) {
     super();
     Object.defineProperty(this, "name", { value: _name });
@@ -527,7 +527,7 @@ class IntegratedCommandManager {
 }
 
 class CommandController extends IntegratedCommandManager {
-  createInformationList() {
+  createInfomationList() {
     return this.Slash.generateHelp().concat(this.Message.generateHelp());
   }
   generateHelpEmbed(_options) {

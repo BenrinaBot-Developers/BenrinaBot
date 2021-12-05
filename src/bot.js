@@ -1,9 +1,11 @@
 const Discord = require("discord.js");
-const { Logger, ProcessError, SystemError } = require("./system");
 const util = require("./util");
 const client = util.client;
-var prefix = process.env.prefix;
+
+const { Logger, ProcessError, SystemError, Database } = require("./system");
+
 var version = "1.5.0";
+
 const db = require("./dbutil.js");
 
 //実行 てかこの辺コード汚すぎる()
@@ -32,27 +34,38 @@ try {
     Bot.Run();
     require("./test.js");
 
-    return;
-    let count = 0;
-    setInterval(() => {
-      const srvkz = client.guilds.cache.map((guild) => guild.memberCount).reduce((p, c) => p + c);
-      const list = [
-        `helpはb!help/パッチノートは${prefix}patch`,
-        `1.0.0-dev版のbeta機能を全鯖に配信中!!`, //notice
-        `Ver.${version}/Node.js v16/Discord.js v13導入！！`,
-        `起動秒数${db.db.get("time")}秒...
-	  /処理したメッセージの数...${db.db.get("msgcount")}個...`,
-        `${client.guilds.cache.size}サーバーを監視/鯖の合計人数${srvkz}`,
-      ];
-
-      client.user.setActivity(list[count], { type: "PLAYING" });
-      count++;
-      db.db.set("time", db.db.get("time") + 5);
-
-      if (count >= list.length) {
-        count = 0;
+    (async () => {
+      const db = new Database.CacheManager("normal");
+      await db.begin();
+      let initialLaunch = (await db.get("initialLaunchAt")).data.first();
+      console.log(initialLaunch);
+      if (!initialLaunch) {
+        initialLaunch = util.startsAt.getTime();
+        await db.set("initialLaunchAt", initialLaunch);
       }
-    }, 1000 * 5);
+      console.log(initialLaunch);
+      let count = 0;
+      setInterval(() => {
+        let now = new Date();
+        const srvkz = client.guilds.cache.map((guild) => guild.memberCount).reduce((p, c) => p + c);
+        const list = [
+          `1.0.0-dev版のbeta機能を全鯖に配信中!!`, //notice
+          `Node.js v17/Discord.js v13導入！！`,
+          `起動後${now - util.startsAt}秒/通算${now - initialLaunch}秒...`,
+          //`処理したメッセージの数...${db.db.get("msgcount")}個...`,
+          `${client.guilds.cache.size}サーバーで稼働中/総計ユーザー数：${srvkz}人`,
+        ];
+
+        client.user.setActivity(list[count], { type: "PLAYING" });
+        count++;
+
+        if (count >= list.length) {
+          count = 0;
+        }
+      }, 1000 * 5);
+    })();
+
+    return;
   });
 
   try {

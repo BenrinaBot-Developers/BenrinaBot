@@ -12,7 +12,7 @@ const commands = new CommandController();
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     execute: ["aaa", "bbb", "ccc"],
   })
     .setName("test")
@@ -22,7 +22,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     argumentTypes: SlashCommand.ArgumentType.OBJECT,
     execute: require("./commands/serverMap.js"),
   })
@@ -60,7 +60,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     timeout: 1.5 * 60 * 1000,
     execute: require("./commands/compose.js"),
   })
@@ -71,7 +71,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     options: [{ type: "BOOLEAN", name: "details", description: "Whether to measure detailed information" }],
     execute: require("./commands/ping.js"),
   })
@@ -81,7 +81,7 @@ commands.addCommand(
 
 const rnd = new SlashCommand({
   type: SlashCommand.Type.GUILD,
-  guildIDs: slashguild,
+  guildIds: slashguild,
   options: [
     { type: "STRING", name: "length", description: "nannketa", required: true },
     { type: "BOOLEAN", name: "isnum", description: "Number only?" },
@@ -95,7 +95,7 @@ commands.addCommand(rnd);
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     execute: () => {
       const { slashinvite } = require("./commands/invite.js");
       return {
@@ -110,7 +110,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     execute: () => {
       const { support } = require("./commands/support.js");
       return {
@@ -125,7 +125,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     execute: function () {
       const { help } = require("./commands/help.js");
       return help(this.from);
@@ -138,7 +138,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     execute: function () {
       const { cmdlist } = require("./commands/cmd.js");
       return cmdlist(this.from);
@@ -151,7 +151,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     options: [
       {
         type: "STRING",
@@ -175,7 +175,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     options: [
       {
         type: "STRING",
@@ -188,7 +188,7 @@ commands.addCommand(
           { name: "その他", value: "other" },
         ],
       },
-      { type: "STRING", name: "userid", description: "Bad user ID", required: true },
+      { type: "STRING", name: "userid", description: "Bad user Id", required: true },
       { type: "STRING", name: "contents", description: "Content you want to tell us", required: true },
     ],
     execute: require("./commands/report.js"),
@@ -200,7 +200,7 @@ commands.addCommand(
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     timeout: 30 * 1000,
     options: [{ type: "STRING", name: "formula", description: "What you want me to solve", required: true }],
     execute: require("./commands/mathSolver.js"),
@@ -212,7 +212,7 @@ commands.addCommand(
 const translate = require("./commands/translate.js");
 const translation = new SlashCommand({
   type: SlashCommand.Type.GUILD,
-  guildIDs: slashguild,
+  guildIds: slashguild,
   execute: translate.execute,
 })
   .setName("translate")
@@ -222,7 +222,7 @@ commands.addCommand(translation);
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     execute: require("./commands/first.js"),
   })
     .setName("first")
@@ -231,7 +231,7 @@ commands.addCommand(
 
 const wikipedia = new SlashCommand({
   type: SlashCommand.Type.GUILD,
-  guildIDs: slashguild,
+  guildIds: slashguild,
   argumentTypes: SlashCommand.ArgumentType.OBJECT,
   execute: require("./commands/wikipedia.js").search,
 })
@@ -242,7 +242,7 @@ commands.addCommand(wikipedia);
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     options: [
       { type: "INTEGER", name: "seconds", description: "ratelimits seconds", required: true },
       { type: "STRING", name: "reason", description: "reasons", required: false },
@@ -255,7 +255,7 @@ commands.addCommand(
 
 const devtest = new SlashCommand({
   type: SlashCommand.Type.GUILD,
-  guildIDs: slashguild,
+  guildIds: slashguild,
   options: [{ type: "STRING", name: "arg1", description: "args1", required: true }],
   execute: require("./commands/devcmd.js"),
 })
@@ -266,7 +266,7 @@ commands.addCommand(devtest);
 commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
-    guildIDs: slashguild,
+    guildIds: slashguild,
     options: [
       {
         type: "STRING",
@@ -314,7 +314,7 @@ commands.addCommand(
 
 /*
 commands.addCommand(
-  new SlashCommand({name:"cmdinfo", description:"Contact to Bot Devs", type:SlashCommand.Type.GUILD, guildIDs:slashguild,
+  new SlashCommand({name:"cmdinfo", description:"Contact to Bot Devs", type:SlashCommand.Type.GUILD, guildIds:slashguild,
   options:[{type:"STRING", name:"command", description:"ypaaaaaaaaaaaa", required:true,
     choices:[
       {name:"help", value:"help"},

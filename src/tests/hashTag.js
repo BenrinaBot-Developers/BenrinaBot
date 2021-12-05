@@ -9,7 +9,7 @@ client.on("messageCreate", (message) => {
     (channel) => channel.type == "GUILD_CATEGORY" && channel.name == "ハッシュタグ"
   );
   let hashTags = message.content.match(/<#\d+>/gi);
-  let hashTagIDs = [];
+  let hashTagIds = [];
   let authorName = message.member.nickname;
   if (!authorName) {
     authorName = message.author.username;
@@ -23,7 +23,7 @@ client.on("messageCreate", (message) => {
 
   hashTags ?.forEach((tag) => {
     let id = tag.replace(/[<#>]/g, "");
-    hashTagIDs.push(id);
+    hashTagIds.push(id);
     let hashTagChannel = message.guild.channels.cache.get(id);
     if (hashTagChannel.parent != hashTagCategory) return;
     hashTagChannel.send({
@@ -35,7 +35,7 @@ client.on("messageCreate", (message) => {
   if (hashTagCategory == void 0 || originalTags == void 0) return;
   originalTags.forEach(async (tag) => {
     let alreadyCreateFlag = false;
-    hashTagIDs.forEach((id) => {
+    hashTagIds.forEach((id) => {
       if (tag.indexOf(id) != -1) {
         alreadyCreateFlag = true;
       }

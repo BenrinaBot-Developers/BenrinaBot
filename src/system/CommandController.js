@@ -23,10 +23,10 @@ class BaseCommand extends SlashCommandBuilder {
     this.execute = _definition.execute;
     this.type = _definition.type; // global or guild
     if (this.type === BaseCommand.Type.GUILD) {
-      this.guildIDs =
-        _definition.guildIDs?.filter((_guildID) => client.guilds.cache.has(_guildID)) ?? new Array(1).fill();
+      this.guildIds =
+        _definition.guildIds?.filter((_guildId) => client.guilds.cache.has(_guildId)) ?? new Array(1).fill();
     } else if (this.type === BaseCommand.Type.GLOBAL) {
-      this.guildIDs = [null];
+      this.guildIds = [null];
     } else {
       throw new Error("Invalid command's type: " + this.type);
     }
@@ -61,11 +61,11 @@ class SlashCommand extends BaseCommand {
     }
   }
 
-  static async #getApplicationCommandManager(_type, _commandID, _guildID = null) {
-    if (!_commandID) throw new Error("Invalid command's ID");
+  static async #getApplicationCommandManager(_type, _commandId, _guildId = null) {
+    if (!_commandId) throw new Error("Invalid command's Id");
     switch (_type) {
       case SlashCommand.Type.GUILD:
-        return client.guilds.cache.get(_guildID).commands;
+        return client.guilds.cache.get(_guildId).commands;
         break;
       case SlashCommand.Type.GLOBAL:
         return client.application.commands;
@@ -75,37 +75,37 @@ class SlashCommand extends BaseCommand {
     }
   }
 
-  static async postCommandID(_guildID, _definition) {
-    let guildID;
+  static async postCommandId(_guildId, _definition) {
+    let guildId;
     switch (_definition.type) {
       case SlashCommand.Type.GUILD:
-        guildID = _guildID;
+        guildId = _guildId;
         break;
       case SlashCommand.Type.GLOBAL:
-        guildID = null;
+        guildId = null;
         break;
       default:
         throw new Error("Invalid command's type");
     }
-    //console.log(_definition.type, guildID)
-    const response = await client.application.commands.create(_definition, guildID).catch((_response) => {
+    //console.log(_definition.type, guildId)
+    const response = await client.application.commands.create(_definition, guildId).catch((_response) => {
       throw _response;
     });
     //console.log(_definition.permissions)
     if (_definition.permissions) {
       response.permissions.set({
-        permissions: _definition.permissions(guildID),
+        permissions: _definition.permissions(guildId),
       });
     }
     return response;
   }
 
-  static async deleteCommandID(_type, _commandID, _guildID = null) {
-    const commands = await this.#getApplicationCommandManager(_type, _commandID, _guildID).catch((_response) => {
+  static async deleteCommandId(_type, _commandId, _guildId = null) {
+    const commands = await this.#getApplicationCommandManager(_type, _commandId, _guildId).catch((_response) => {
       throw _response;
     });
-    //console.log(_type, _commandID, _guildID)
-    let command = await commands.fetch(_commandID).catch((_response) => {
+    //console.log(_type, _commandId, _guildId)
+    let command = await commands.fetch(_commandId).catch((_response) => {
       throw _response;
     });
     //console.log(command)
@@ -116,12 +116,12 @@ class SlashCommand extends BaseCommand {
     return command;
   }
 
-  static async editCommandID(_type, _commandID, _guildID = null, _definition) {
-    const commands = await this.#getApplicationCommandManager(_type, _commandID, _guildID).catch((_response) => {
+  static async editCommandId(_type, _commandId, _guildId = null, _definition) {
+    const commands = await this.#getApplicationCommandManager(_type, _commandId, _guildId).catch((_response) => {
       throw _response;
     });
-    //console.log(_type, _commandID, _guildID)
-    let command = await commands.fetch(_commandID).catch((_response) => {
+    //console.log(_type, _commandId, _guildId)
+    let command = await commands.fetch(_commandId).catch((_response) => {
       throw _response;
     });
     //console.log(command)
@@ -132,13 +132,13 @@ class SlashCommand extends BaseCommand {
     return command;
   }
 
-  postCommand(_guildIDs = this.guildIDs) {
-    //console.log(this._createEndpost(_guildIDs))
-    const postCommands_promise = _guildIDs.map((_guildID) => {
+  postCommand(_guildIds = this.guildIds) {
+    //console.log(this._createEndpost(_guildIds))
+    const postCommands_promise = _guildIds.map((_guildId) => {
       return new Promise((resolve, reject) => {
-        SlashCommand.postCommandID(_guildID, this)
+        SlashCommand.postCommandId(_guildId, this)
           .then(async (response) => {
-            this.id[_guildID] = response.id;
+            this.id[_guildId] = response.id;
             return resolve(response);
           })
           .catch((_error) => {
@@ -150,10 +150,10 @@ class SlashCommand extends BaseCommand {
     return Promise.all(postCommands_promise);
   }
 
-  deleteCommand(_guildIDs = this.guildIDs) {
-    const deleteCommands_promise = _guildIDs.map((_guildID) => {
+  deleteCommand(_guildIds = this.guildIds) {
+    const deleteCommands_promise = _guildIds.map((_guildId) => {
       return new Promise(async (resolve, reject) => {
-        await SlashCommand.deleteCommandID(this.type, this.id[_guildID], _guildID)
+        await SlashCommand.deleteCommandId(this.type, this.id[_guildId], _guildId)
           .then((_response) => {
             return resolve(_response);
           })
@@ -165,10 +165,10 @@ class SlashCommand extends BaseCommand {
     return Promise.all(deleteCommands_promise);
   }
 
-  editCommand(_guildIDs = this.guildIDs) {
-    const deleteCommands_promise = _guildIDs.map((_guildID) => {
+  editCommand(_guildIds = this.guildIds) {
+    const deleteCommands_promise = _guildIds.map((_guildId) => {
       return new Promise(async (resolve, reject) => {
-        await SlashCommand.editCommandID(this.type, this.id[_guildID], _guildID, this)
+        await SlashCommand.editCommandId(this.type, this.id[_guildId], _guildId, this)
           .then((_response) => {
             return resolve(_response);
           })
@@ -285,13 +285,13 @@ class SlashCommandManager extends BaseCommandManager {
         } catch (_e) {
           clearTimeout(timeLimiter);
           clearTimeout(deferTimer);
-          const errorID = (await new CommandError("Unexpected Error", _e, calledCommand).log())[0].id;
-          console.log(errorID);
+          const errorId = (await new CommandError("Unexpected Error", _e, calledCommand).log())[0].id;
+          console.log(errorId);
           if (deferred) {
             clearTimeout(deferTimer);
-            _interaction.followUp(`予期せぬエラーが発生しました。\nエラーID：${errorID}`);
+            _interaction.followUp(`予期せぬエラーが発生しました。\nエラーId：${errorId}`);
           } else {
-            _interaction.reply(`予期せぬエラーが発生しました。\nエラーID：${errorID}`);
+            _interaction.reply(`予期せぬエラーが発生しました。\nエラーId：${errorId}`);
           }
           return;
         }
@@ -377,7 +377,7 @@ class MessageCommandManager extends BaseCommandManager {
       //console.log(this.commands)
       this.commands.forEach(async (_command) => {
         //console.log(_command)
-        if (_message.content.match(_command.regExp) && _command.data.guildIDs.indexOf(_message.guild.id) != -1) {
+        if (_message.content.match(_command.regExp) && _command.data.guildIds.indexOf(_message.guild.id) != -1) {
           let _arguments = _message.content.replace(_command.regExp, "");
           //console.log(_command.data.options)
           if (_command.data.options.split) {

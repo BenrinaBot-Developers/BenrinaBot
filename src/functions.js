@@ -219,8 +219,8 @@ exports.splitTextLength = (text, { length = 2000 } = {}) => {
   return letters.reduce((acc, c, i) => (i % length ? acc : [...acc, letters.slice(i, i + length).join("")]), []);
 };
 
-exports.send = async function (_chID, _message) {
-  const channel = await client.channels.fetch(_chID);
+exports.send = async function (_chId, _message) {
+  const channel = await client.channels.fetch(_chId);
   return channel.send(_message);
 };
 

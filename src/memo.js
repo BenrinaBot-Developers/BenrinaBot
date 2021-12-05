@@ -1,6 +1,7 @@
 //古のコードたち (実行されない)
 return;
-  static _createEndpost = (_type, _guildID) => {
+/*
+  static _createEndpost = (_type, _guildId) => {
     const apiPath = `https://discord.com/api/v8/applications/${String(
       client.user.id
     )}`;
@@ -13,7 +14,7 @@ return;
         break;
       case 'guild':
         {
-          _url = `${apiPath}/guilds/${_guildID}/commands`;
+          _url = `${apiPath}/guilds/${_guildId}/commands`;
         }
         break;
       default: {
@@ -22,9 +23,9 @@ return;
     }
     return _url;
   };
- static async postCommandID(_definition, _guildID) {
+ static async postCommandId(_definition, _guildId) {
     const response = await fetch(
-      this._createEndpost(_definition.type, _guildID),
+      this._createEndpost(_definition.type, _guildId),
       {
         method: 'post',
         body: JSON.stringify({
@@ -48,9 +49,9 @@ return;
     return response;
   }
 
-  static async deleteCommandID(_type, _commandID, _guildID = null) {
+  static async deleteCommandId(_type, _commandId, _guildId = null) {
     const response = await fetch(
-      `${this._createEndpost(_type, _guildID)}/${_commandID}`,
+      `${this._createEndpost(_type, _guildId)}/${_commandId}`,
       {
         method: 'delete',
         body: null,
@@ -74,3 +75,4 @@ return;
         .callback.post({
           data: return_value
         });
+        */

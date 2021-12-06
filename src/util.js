@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const Moment = require("moment-timezone");
 const Discord = require("discord.js");
@@ -20,27 +20,23 @@ const getTime = function (_date = new Date()) {
 };
 exports.getTime = getTime;
 
-const slashguild = ["878512058088423454"]//rokkyo and dev
+const slashguild = ["878512058088423454"]; //rokkyo and dev
 exports.slashguild = slashguild;
 
 const { Intents, Client } = Discord;
 const options = {
-   intents: Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES,
- };
+  intents: Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES,
+};
 const client = new Client(options);
 exports.clientOpitions = options;
 exports.client = client;
 
-const avatarURL = "https://cdn.discordapp.com/app-icons/860122667709497354/05b9167077333a8df02e4544c64dea42.png?size=1024";
+const avatarURL =
+  "https://cdn.discordapp.com/app-icons/860122667709497354/05b9167077333a8df02e4544c64dea42.png?size=1024";
 exports.avatarURL = avatarURL;
 
 const isAdmin = function (testid) {
-  var adminids = [
-    "709391738728349768",
-    "804688154845904907",
-    "597398016944635954",
-    "687599949093011495",
-  ];
+  var adminids = ["709391738728349768", "804688154845904907", "597398016944635954", "687599949093011495"];
   let passIndex = adminids.indexOf(testid);
   if (passIndex === -1) {
     return false;
@@ -61,11 +57,29 @@ const systemLogChannels = {
 };
 */
 const systemLogChannels = {
-  synthesized:["899175058075942932"],
-  start_up:["899175440999120916"],
-  command:["899175560159305769"],
-  error:["899175629482762250"],
-  database:["899175857191546922"],
-  api:["899176298184859709"]
+  development: {
+    synthesized: ["899175058075942932"],
+    start_up: ["899175440999120916"],
+    command: ["899175560159305769"],
+    error: ["899175629482762250"],
+    database: ["899175857191546922"],
+    api: ["899176298184859709"],
+  },
+  uni: {
+    synthesized: ["917351789064515595"],
+    start_up: ["917353165475692574"],
+    command: ["917353452177346561"],
+    error: ["917353606636797972"],
+    database: ["917353943196110858"],
+    api: ["917354272029564948"],
+  },
+  akane: {
+    synthesized: ["917351749495435264"],
+    start_up: ["917354402401116180"],
+    command: ["917354457698820136"],
+    error: ["917354499344039967"],
+    database: ["917354543199707167"],
+    api: ["917354601295003668"],
+  },
 };
 exports.systemLogChannels = systemLogChannels;

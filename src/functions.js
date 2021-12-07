@@ -173,42 +173,6 @@ String.prototype.replaceHtmlTags = function (_after = "") {
   };
 })();
 
-exports.mention = function (str, type) {
-  if (type === 0) {
-    //メンションからidを取り出す
-    str.split("<").join("");
-    str.split(">").join("");
-    str.split("@").join("");
-    str.split("!").join("");
-    return str;
-  } else if (type === 1) {
-    //idをメンションにする
-    let str = `<!@${str}>`;
-    return str;
-  } else {
-    //typeが指定されていない場合
-    console.log(`type:${type}は無効です。aかbを選んでください。`);
-    return;
-  }
-};
-
-exports.chmention = function (str, type) {
-  if (type === 0) {
-    //メンションからidを取り出す
-    str.split("<").join("");
-    str.split(">").join("");
-    str.split("#").join("");
-    return str;
-  } else if (type === 1) {
-    //idをメンションにする
-    str = `<#${str}>`;
-    return str;
-  } else {
-    //typeが指定されていない場合
-    console.log(`type:${type}は無効です。aかbを選んでください。`);
-    return;
-  }
-};
 
 exports.range = (_strat, _end) => {
   return Array.from(Array(_end - _strat), (v, k) => k + _strat);

@@ -3,15 +3,6 @@
 const Moment = require("moment-timezone");
 const Discord = require("discord.js");
 
-const checkundefined = function (n) {
-  if (n === undefined) {
-    return true;
-  } else {
-    return false;
-  }
-};
-exports.checkundefined = checkundefined;
-
 const startsAt = new Date();
 module.exports.startsAt = startsAt;
 
@@ -35,16 +26,6 @@ const avatarURL =
   "https://cdn.discordapp.com/app-icons/860122667709497354/05b9167077333a8df02e4544c64dea42.png?size=1024";
 exports.avatarURL = avatarURL;
 
-const isAdmin = function (testid) {
-  var adminids = ["709391738728349768", "804688154845904907", "597398016944635954", "687599949093011495"];
-  let passIndex = adminids.indexOf(testid);
-  if (passIndex === -1) {
-    return false;
-  } else {
-    return true;
-  }
-};
-exports.isAdmin = isAdmin;
 
 /*
 const systemLogChannels = {

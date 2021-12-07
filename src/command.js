@@ -152,6 +152,19 @@ commands.addCommand(
   new SlashCommand({
     type: SlashCommand.Type.GUILD,
     guildIds: slashguild,
+    execute: function () {
+      const { serverInfo } = require("./commands/serverinfo.js");
+      return serverInfo(this.from);
+    },
+  })
+    .setName("serverinfo")
+    .setDescription("beta")
+);
+
+commands.addCommand(
+  new SlashCommand({
+    type: SlashCommand.Type.GUILD,
+    guildIds: slashguild,
     options: [
       {
         type: "STRING",

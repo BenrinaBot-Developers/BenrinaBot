@@ -15,17 +15,19 @@ const log = async (
   type,
   { date, command, method, message, error, data, response: { config: apiConfig, data: apiResponse } = {} }
 ) => {
-  if (process.env.EXECUTION_LOCATION !== "replit") return;
+  //if (process.env.EXECUTION_LOCATION !== "replit") return;
+  const logChannels = systemLogChannels[process.env.LOG_OUTPUT];
+  if (!logChannels) return;
   let channelIds;
   let information = new Collection();
   switch (type) {
     case Type.START_UP:
-      channelIds = systemLogChannels.start_up;
+      channelIds = logChannels.start_up;
       information.set("StartsAt", getTime(date));
       break;
 
     case Type.ERROR:
-      channelIds = systemLogChannels.error;
+      channelIds = logChannels.error;
 
       if ("toCollection" in error) information = information.concat(error.toCollection());
       else information.set(Symbol(codeBlock("js", error?.stack)));
@@ -34,7 +36,7 @@ const log = async (
       break;
 
     case Type.COMMAND:
-      channelIds = systemLogChannels.command;
+      channelIds = logChannels.command;
       information
         .set("Command", command)
         .set(Symbol("$"))
@@ -48,7 +50,7 @@ const log = async (
       break;
 
     case Type.API:
-      channelIds = systemLogChannels.api;
+      channelIds = logChannels.api;
       const replacers = {
         response(key, value) {
           if (!key) return value;
@@ -66,7 +68,7 @@ const log = async (
       break;
 
     case Type.DATABASE:
-      channelIds = systemLogChannels.database;
+      channelIds = logChannels.database;
       information.set("Method", `\`${method}\``);
       if (data) information.set("Data/Content", codeBlock("json", JSON.stringify(data, null, 2)));
       break;
@@ -101,7 +103,7 @@ const log = async (
 
   channelTags = channelTags.join(" ");
   //informationString = informationString.replace("\n", " ");
-  systemLogChannels.synthesized.forEach((_chId) => {
+  logChannels.synthesized.forEach((_chId) => {
     sentChannelIds.push(
       functions
         .send(_chId, `${channelTags}：${title} <${[...information.keys()].join(", ")}>  [${getTime()}]`)

@@ -7,7 +7,9 @@ const fs = require("fs").promises;
 const parse = require("csv-parse/lib/sync");
 
 const { API } = require("../system");
-const { BaseDatabaseAccessor } = require("../../database/accessor.js");
+const {
+  Database: { BaseDatabaseAccessor },
+} = require("../system");
 const functions = require("../functions.js");
 
 module.exports = async function* (_details) {
